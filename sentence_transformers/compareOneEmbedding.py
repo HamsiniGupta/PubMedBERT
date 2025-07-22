@@ -161,12 +161,12 @@ def detailed_single_question_analysis(baseline_model, trained_model, tokenizer, 
     # Cross-embedding analysis
     print(f"\n4. CROSS-EMBEDDING SIMILARITY:")
     
-    # How similar are question embeddings between models?
+    # How similar are question embeddings between models
     q_self_sim = cosine_similarity(baseline_q_emb.reshape(1, -1), trained_q_emb.reshape(1, -1))[0, 0]
     c_self_sim = cosine_similarity(baseline_c_emb.reshape(1, -1), trained_c_emb.reshape(1, -1))[0, 0]
     
-    print(f"Question: baseline ? trained = {q_self_sim:.3f}")
-    print(f"Context:  baseline ? trained = {c_self_sim:.3f}")
+    print(f"Question: baseline trained = {q_self_sim:.3f}")
+    print(f"Context:  baseline trained = {c_self_sim:.3f}")
     print(f"Interpretation: {q_self_sim:.3f} means embeddings are {'very similar' if q_self_sim > 0.8 else 'moderately similar' if q_self_sim > 0.6 else 'quite different'}")
     
     # Statistical summary

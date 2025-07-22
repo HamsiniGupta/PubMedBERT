@@ -1,12 +1,13 @@
 # Model outputs
-output/
+output/pubmedqa-supervised-simcse/
+sentence_transformers/output/
 *.safetensors
 *.bin
 *.pt
 *.pth
 
 # Python cache
-__pycache__/
+**/__pycache__/
 *.pyc
 *.pyo
 
