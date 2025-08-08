@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Evaluate PubMedBert model on pubmedqa_eval.csv with ROC curve analysis
+Evaluate PubMedBert model on pubmedqa_val_clean.csv with ROC curve analysis
 """
 
 import pandas as pd

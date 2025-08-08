@@ -24,7 +24,7 @@ class RAGPipeline:
         
     def create_pipeline(self):
         def retriever(query: str) -> List[Document]:
-            docs = self.weaviate_manager.search_documents_vector_only(query, limit=4)
+            docs = self.weaviate_manager.search_documents(query, limit=2)
             return docs
 
         def format_docs(docs):
