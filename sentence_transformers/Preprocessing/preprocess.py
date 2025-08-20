@@ -39,9 +39,9 @@ def split_dataset_by_questions(dataset, train_ratio=0.7, val_ratio=0.15, test_ra
     overlap_val_test = val_questions.intersection(test_questions)
     
     logger.info(f"Question overlap check:")
-    logger.info(f"  Train-Val overlap: {len(overlap_train_val)} (should be 0)")
-    logger.info(f"  Train-Test overlap: {len(overlap_train_test)} (should be 0)")
-    logger.info(f"  Val-Test overlap: {len(overlap_val_test)} (should be 0)")
+    logger.info(f"Train-Val overlap: {len(overlap_train_val)} (should be 0)")
+    logger.info(f"Train-Test overlap: {len(overlap_train_test)} (should be 0)")
+    logger.info(f"Val-Test overlap: {len(overlap_val_test)} (should be 0)")
     
     if overlap_train_val or overlap_train_test or overlap_val_test:
         logger.error("OVERLAP DETECTED!")
@@ -52,7 +52,7 @@ def split_dataset_by_questions(dataset, train_ratio=0.7, val_ratio=0.15, test_ra
 
 def create_supervised_simcse_pairs(data, output_file, max_pairs=50000):
 
-    logger.info(f"Creating SUPERVISED SimCSE pairs from {len(data)} samples...")
+    logger.info(f"Creating supervised SimCSE pairs from {len(data)} samples...")
     
     pairs = []
     
@@ -79,7 +79,7 @@ def create_supervised_simcse_pairs(data, output_file, max_pairs=50000):
         if long_answer and len(long_answer) > 50:
             all_answers.append(long_answer)
     
-    # Remove duplicates but keep track of which belong to which question
+    # Remove duplicates
     all_contexts = list(set(all_contexts))
     all_answers = list(set(all_answers))
     
@@ -92,18 +92,18 @@ def create_supervised_simcse_pairs(data, output_file, max_pairs=50000):
         contexts = item['context']['contexts']
         long_answer = item['long_answer'].strip()
         
-        # Strategy 1: Question-Answer pairs (POSITIVE)
+        # Strategy 1: Question-Answer pairs (pos)
         if question and long_answer and len(long_answer) > 50:
             positive_pairs.append([question, long_answer, 1])
         
-        # Strategy 2: Question-Context pairs (POSITIVE)
+        # Strategy 2: Question-Context pairs (pos)
         if contexts and question:
             for context in contexts:
                 context = context.strip()
                 if len(context) > 50:
                     positive_pairs.append([question, context, 1])
         
-        # Strategy 3: Context-Answer pairs (POSITIVE)
+        # Strategy 3: Context-Answer pairs (pos)
         if contexts and long_answer and len(long_answer) > 50:
             for context in contexts[:2]:  # Limit to first 2 contexts
                 context = context.strip()
@@ -112,7 +112,7 @@ def create_supervised_simcse_pairs(data, output_file, max_pairs=50000):
     
     logger.info(f"Generated {len(positive_pairs)} positive pairs")
     
-    # Generate HARD negative pairs
+    # Generate hard negative pairs
     negative_pairs = []
     
     # Method 1: Random negatives (easy negatives)
@@ -243,7 +243,7 @@ def create_supervised_simcse_pairs(data, output_file, max_pairs=50000):
     logger.info(f"Final training set: {len(final_pairs)} pairs ({pos_final} positive, {neg_final} negative)")
     logger.info(f"Positive/Negative ratio: {pos_final/neg_final:.2f}")
     
-    # Save with labels (SUPERVISED SimCSE format)
+    # Save with labels 
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with open(output_file, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
@@ -251,7 +251,7 @@ def create_supervised_simcse_pairs(data, output_file, max_pairs=50000):
         for pair in final_pairs:
             writer.writerow(pair)
     
-    logger.info(f"Saved {len(final_pairs)} SUPERVISED training pairs to {output_file}")
+    logger.info(f"Saved {len(final_pairs)} supervised training pairs to {output_file}")
     return output_file
 
 def create_labeled_pairs_from_data(data, output_file, pair_type="test"):
@@ -344,12 +344,12 @@ def verify_no_overlap(train_file, val_file, test_file):
     val_test_overlap = val_questions.intersection(test_questions)
     
     logger.info(f"Overlap analysis:")
-    logger.info(f"  Train questions: {len(train_questions)}")
-    logger.info(f"  Val questions: {len(val_questions)}")
-    logger.info(f"  Test questions: {len(test_questions)}")
-    logger.info(f"  Train Val overlap: {len(train_val_overlap)}")
-    logger.info(f"  Train Test overlap: {len(train_test_overlap)}")
-    logger.info(f"  Val Test overlap: {len(val_test_overlap)}")
+    logger.info(f"Train questions: {len(train_questions)}")
+    logger.info(f"Val questions: {len(val_questions)}")
+    logger.info(f"Test questions: {len(test_questions)}")
+    logger.info(f"Train Val overlap: {len(train_val_overlap)}")
+    logger.info(f"Train Test overlap: {len(train_test_overlap)}")
+    logger.info(f"Val Test overlap: {len(val_test_overlap)}")
     
     if train_test_overlap:
         logger.error("Train Test overlap detected!")
@@ -362,7 +362,7 @@ def verify_no_overlap(train_file, val_file, test_file):
         return True
 
 def main():
-    logger.info("Starting PubMedQA preprocessing with SUPERVISED SimCSE (labeled training pairs)...")
+    logger.info("Starting PubMedQA preprocessing with supervised SimCSE (labeled training pairs)...")
     
     # Set random seed for reproducibility
     random.seed(42)
@@ -381,7 +381,7 @@ def main():
             test_ratio=0.15
         )
         
-        # Create SUPERVISED training pairs 
+        # Create supervised training pairs 
         train_file = create_supervised_simcse_pairs(
             train_split,
             output_file="data/pubmedqa_train_supervised.csv",
@@ -403,9 +403,9 @@ def main():
         )
         
         logger.info("Files created:")
-        logger.info(f"   Training (SUPERVISED): {train_file}")
-        logger.info(f"   Validation: {val_file}")
-        logger.info(f"   Test: {test_file}")
+        logger.info(f"Training: {train_file}")
+        logger.info(f"Validation: {val_file}")
+        logger.info(f"Test: {test_file}")
         
         # Show sample of training data
         logger.info("\nSample training pairs:")
@@ -423,7 +423,7 @@ def main():
         if is_clean:
             logger.info("Clean SimCSE dataset created!")
         else:
-            logger.error("FAILED: Data leakage detected.")
+            logger.error("failed: Data leakage detected.")
             
     except Exception as e:
         logger.error(f"Error during preprocessing: {e}")

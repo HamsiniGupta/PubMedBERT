@@ -33,13 +33,13 @@ class WeaviateManager:
         # Device config
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
-        print("Loading SimCSE model for query encoding...")
+        print("Loading PubMedBERT for query encoding...")
         self.simcse_embeddings = SimCSEEmbeddings(simcse_model_path)
-        print("SimCSE model loaded successfully!")
+        print("PubMedBERT loaded successfully!")
 
     def _connect_to_weaviate(self):
         
-        print(f"Connecting to Weaviate at {self.url}")
+        print(f"Connecting to Weaviate...")
         
         try:
             print("Trying API Key authentication...")
@@ -64,61 +64,15 @@ class WeaviateManager:
             except:
                 pass
         
-        try:
-            print("Trying alternative authentication...")
-            self.client = weaviate.connect_to_weaviate_cloud(
-                cluster_url=self.url,
-                auth_credentials=Auth.bearer_token(self.api_key),
-                headers={"X-HuggingFace-Api-Key": self.hf_token} if self.hf_token else None,
-            )
-            
-            # Test connection
-            if self.client.is_ready():
-                print("Connected successfully with Bearer Token authentication")
-                return
-            else:
-                print("Client not ready")
-                self.client.close()
-                
-        except Exception as e:
-            print(f"Bearer Token auth failed: {e}")
-            try:
-                self.client.close()
-            except:
-                pass
-        
-        try:
-            print("Trying without HuggingFace token...")
-            self.client = weaviate.connect_to_weaviate_cloud(
-                cluster_url=self.url,
-                auth_credentials=Auth.api_key(self.api_key),
-            )
-            
-            # Test connection
-            if self.client.is_ready():
-                print("Connected successfully without HF token")
-                return
-            else:
-                print("Client not ready")
-                self.client.close()
-                
-        except Exception as e:
-            print(f"Connection without HF token failed: {e}")
-            try:
-                self.client.close()
-            except:
-                pass
-            
-        raise ConnectionError("All Weaviate v4 connection methods failed")
 
     def reindex_with_simcse(self, documents, simcse_model_path=None):
-        """Reindex documents using your trained SimCSE model"""
+        """Reindex documents using PubMedBERT"""
         if simcse_model_path is None:
             simcse_model_path = self.simcse_model_path
             
-        print("Initializing SimCSE embeddings...")
+        print("Initializing PubMedBERT embeddings...")
         
-        # Use the existing SimCSE embeddings 
+        # Use the existing PubMedBERT embeddings 
         simcse_embeddings = self.simcse_embeddings
         
         collection_name = "PMQA_PubMedBert" 
@@ -132,7 +86,7 @@ class WeaviateManager:
         print(f"Creating collection: {collection_name}")
         self.client.collections.create(
             name=collection_name,
-            vectorizer_config=Configure.Vectorizer.none(),  # provide our own vectors
+            vectorizer_config=Configure.Vectorizer.none(),  # provide PubMedBERT vectors
             vector_index_config=Configure.VectorIndex.hnsw(
                 distance_metric=VectorDistances.COSINE
             ),
@@ -146,7 +100,7 @@ class WeaviateManager:
         
         collection = self.client.collections.get(collection_name)
         
-        print(f"Encoding {len(documents)} documents with PubMedBert SimCSE...")
+        print(f"Encoding {len(documents)} documents with PubMedBert...")
         
         # Process documents in batches
         batch_size = 100
@@ -175,7 +129,7 @@ class WeaviateManager:
             
             print(f"Processed {min(i + batch_size, len(documents))}/{len(documents)} documents")
         
-        print(f"Successfully indexed {len(documents)} documents with PubMedBert SimCSE!")
+        print(f"Successfully indexed {len(documents)} documents with PubMedBert!")
         return collection_name
             
     def create_schema(self):
@@ -204,7 +158,7 @@ class WeaviateManager:
        
         with collection.batch.fixed_size(batch_size=100) as batch:
             for doc in documents:
-                # Generate embedding using SimCSE model
+                # Generate embedding using PubMedBERT
                 vector = self.simcse_embeddings.embed_query(doc.page_content)
                 
                 if hasattr(vector, 'tolist'):
@@ -248,7 +202,7 @@ class WeaviateManager:
 
         collection = self.client.collections.get("PMQA_PubMedBert")
     
-        # Use hybrid search with your SimCSE embeddings
+        # Use hybrid search with PubMedBERT
         results = collection.query.hybrid(
             query=query,
             vector=query_embedding,
@@ -282,52 +236,9 @@ class WeaviateManager:
             candidates.append(doc)
         
         return candidates[:limit]
-
-    def search_documents_vector_only(self, query: str, limit: int = 2) -> List[Document]:
-        #Search documents using only vector similarity (no hybrid)
-        
-        # Get the query embedding using your trained SimCSE model
-        query_embedding = self.simcse_embeddings.embed_query(query)
-        
-        # Ensure query_embedding is a proper Python list
-        if isinstance(query_embedding, np.ndarray):
-            query_embedding = query_embedding.tolist()
-        elif not isinstance(query_embedding, list):
-            query_embedding = list(query_embedding)
-
-        # Retrieve from the vector DB using only vector search
-        collection = self.client.collections.get("PMQA_PubMedBert")
-    
-        results = collection.query.near_vector(
-            near_vector=query_embedding,
-            limit=limit,
-            return_metadata=MetadataQuery(score=True, distance=True),
-        )
-
-        candidates = []
-        for i, result in enumerate(results.objects):
-            properties = result.properties
-            metadata = result.metadata
-
-            doc = Document(
-                page_content=properties.get("content", ""),
-                metadata={
-                    "source": properties.get("source", ""),
-                    "document_id": properties.get("document_id", ""),
-                    "context_id": properties.get("context_id", ""),
-                }
-            )
-            
-            # Add retrieval scores to metadata
-            doc.metadata["score"] = metadata.score
-            doc.metadata["distance"] = metadata.distance
-            
-            candidates.append(doc)
-        
-        return candidates[:limit]
     
     def get_embedding_stats(self):
-        """Get statistics about the embedding collection"""
+        """Get statistics about the collection"""
         collection = self.client.collections.get("PMQA_PubMedBert")
         
         # Get collection info

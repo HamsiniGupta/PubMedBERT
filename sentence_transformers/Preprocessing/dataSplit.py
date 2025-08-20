@@ -1,11 +1,10 @@
 import csv
 import json
 
-# ====== Config ======
+# Config 
 CSV_FILE = "data/pubmedqa_test_clean.csv"          
-JSON_FILE = "ori_pqal.json"   
-OUTPUT_FILE = "actual_testing_dataset.json"  
-# =====================
+JSON_FILE = "data/ori_pqal.json"   
+OUTPUT_FILE = "data/actual_testing_dataset.json"  
 
 # Load test questions from CSV
 test_questions = set()

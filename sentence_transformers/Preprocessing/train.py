@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PubMedQA SUPERVISED SimCSE Training Script
+PubMedQA SimCSE Training Script
 Modified for supervised contrastive learning with validation monitoring
 """
 
@@ -25,17 +25,8 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
                     handlers=[LoggingHandler()])
 
 def load_supervised_data(csv_file, validation_split=0.1):
-    """
-    Load SUPERVISED PubMedQA data with labels and create train/validation splits
-    
-    Args:
-        csv_file: Path to supervised CSV file (sent0, sent1, label)
-        validation_split: Fraction of data to use for validation
-    
-    Returns:
-        train_samples, dev_samples: Training and validation samples
-    """
-    logging.info(f"Loading SUPERVISED data from {csv_file}")
+
+    logging.info(f"Loading supervised data from {csv_file}")
     
     # Load the CSV file
     df = pd.read_csv(csv_file)
@@ -67,8 +58,7 @@ def load_supervised_data(csv_file, validation_split=0.1):
     # Create training samples for contrastive learning
     train_samples = []
     for _, row in train_df.iterrows():
-        if row['label'] == 1:  # Only positive pairs for contrastive training
-            train_samples.append(InputExample(texts=[row['sent0'], row['sent1']]))
+        train_samples.append(InputExample(texts=[row['sent0'], row['sent1']]))
     
     # Create validation samples for evaluation
     val_samples = []
@@ -77,25 +67,21 @@ def load_supervised_data(csv_file, validation_split=0.1):
         val_samples.append(InputExample(texts=[row['sent0'], row['sent1']]))
         val_labels.append(int(row['label']))
     
-    logging.info(f"Created {len(train_samples)} training pairs (positive only)")
-    logging.info(f"Created {len(val_samples)} validation pairs (positive + negative)")
+    logging.info(f"Created {len(train_samples)} training pairs")
+    logging.info(f"Created {len(val_samples)} validation pairs")
     
     return train_samples, val_samples, val_labels
 
 def create_model(model_name, max_seq_length=256):
     """
-    Create the sentence transformer model
-    
+    Create the sentence transformer mode
     Args:
-        model_name: HuggingFace model name
+        model_name: BERT
         max_seq_length: Maximum sequence length
-    
-    Returns:
-        SentenceTransformer model
     """
     logging.info(f"Creating model with {model_name}")
     
-    # Use Huggingface/transformers model for mapping tokens to embeddings
+    # Use model for mapping tokens to embeddings
     word_embedding_model = models.Transformer(model_name, max_seq_length=max_seq_length)
     
     # Apply mean pooling to get one fixed sized sentence vector
@@ -169,12 +155,12 @@ class ValidationLossTracker:
 
 def train_model(model, train_samples, val_samples, val_labels, args):
     """
-    Train the SUPERVISED SimCSE model with validation monitoring
+    Train the supervised SimCSE model with validation monitoring
     
     Args:
         model: SentenceTransformer model
-        train_samples: Training data (positive pairs only)
-        val_samples: Validation data (positive + negative)
+        train_samples: Training data 
+        val_samples: Validation data 
         val_labels: Validation labels
         args: Training arguments
     """
@@ -188,15 +174,14 @@ def train_model(model, train_samples, val_samples, val_labels, args):
     train_dataloader = DataLoader(train_samples, shuffle=True, batch_size=args.batch_size)
     
     # Use MultipleNegativesRankingLoss for contrastive learning
-    # This automatically creates negatives from other samples in the batch
     train_loss = losses.MultipleNegativesRankingLoss(model)
     
     # Calculate warmup steps
     warmup_steps = math.ceil(len(train_dataloader) * args.epochs * 0.1)  # 10% of train data
     logging.info(f"Warmup steps: {warmup_steps}")
     
-    logging.info("Starting SUPERVISED training with validation monitoring")
-    logging.info(f"Training on {len(train_samples)} positive pairs")
+    logging.info("Starting supervised training with validation monitoring")
+    logging.info(f"Training on {len(train_samples)} pairs")
     logging.info(f"Validating on {len(val_samples)} pairs ({sum(val_labels)} positive)")
     
     # Train the model with validation
@@ -262,7 +247,7 @@ def evaluate_final_model(model_path, val_samples, val_labels):
         logging.info(f"Difference: {pos_similarity - neg_similarity:.4f}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Train SUPERVISED SimCSE on PubMedQA data')
+    parser = argparse.ArgumentParser(description='Train supervised SimCSE on PubMedQA data')
     
     # Model arguments
     parser.add_argument('--model_name', type=str, 
@@ -274,7 +259,7 @@ def main():
     # Data arguments
     parser.add_argument('--train_file', type=str, 
                        default='data/pubmedqa_train_supervised.csv',
-                       help='Path to SUPERVISED PubMedQA CSV file')
+                       help='Path to supervised PubMedQA CSV file')
     parser.add_argument('--validation_split', type=float, default=0.1,
                        help='Fraction of data to use for validation')
     
@@ -296,7 +281,7 @@ def main():
     # Create output directory
     os.makedirs(args.output_dir, exist_ok=True)
     
-    logging.info("Starting PubMedQA SUPERVISED SimCSE Training")
+    logging.info("Starting PubMedQA supervised SimCSE Training")
     logging.info(f"Model: {args.model_name}")
     logging.info(f"Data: {args.train_file}")
     logging.info(f"Output: {args.output_dir}")
@@ -311,7 +296,7 @@ def main():
     )
     
     if not train_samples:
-        logging.error("No training samples found! Check your CSV file format.")
+        logging.error("No training samples found! Check CSV file.")
         return
     
     # Create model

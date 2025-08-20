@@ -39,7 +39,7 @@ api = HfApi()
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # Defining LLM 
-def llm_model(model_name="meta-llama/Meta-Llama-3.1-8B-Instruct"):
+def llm_model(model_name="aaditya/OpenBioLLM-Llama3-8B"):
     tokenizer = AutoTokenizer.from_pretrained(model_name, token=hf_token)
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
@@ -79,19 +79,19 @@ if os.path.exists(SIMCSE_MODEL_PATH):
 else:
     print(f"SimCSE model not found at: {SIMCSE_MODEL_PATH}")
 
-# Configuration for weaviate and huggingface
-WEAVIATE_URL = os.getenv('WEAVIATE_URL', 'https://wrqxngldroq4aybpj2a8vw.c0.us-west3.gcp.weaviate.cloud')
-
-# Load Weaviate API key from environment variable
-import os
+#Connect to Weaviate Database
+WEAVIATE_URL = os.getenv('WEAVIATE_URL')
 WEAVIATE_API_KEY = os.getenv('WEAVIATE_API_KEY')
+
+if not WEAVIATE_URL:
+    raise ValueError("Weaviate URL not found in environment variables")
 if not WEAVIATE_API_KEY:
     raise ValueError("Weaviate API key not found in environment variables")
 
 def initialize_rag_with_simcse():
-    """Initialize the RAG system with your trained SimCSE model"""
+    """Initialize the RAG system with PubMedBERT"""
     print("Initializing LLM...")
-    llm = llm_model("meta-llama/Meta-Llama-3.1-8B-Instruct")
+    llm = llm_model("aaditya/OpenBioLLM-Llama3-8B")
 
     print("Connecting to Weaviate...")
     weaviate_manager = WeaviateManager(WEAVIATE_URL, 
@@ -101,13 +101,13 @@ def initialize_rag_with_simcse():
     dataset = PubMedQAProcessor.load_pubmedqa_dataset()
     documents = PubMedQAProcessor.process_contexts_to_documents(dataset)
 
-    print("Reindexing documents with SimCSE...")
+    print("Reindexing documents with PubMedBERT...")
     collection_name = weaviate_manager.reindex_with_simcse(documents, "output/pubmedqa-supervised-simcse")
     
     weaviate_manager.collection_name = collection_name
 
     print("Creating RAG pipeline...")
-    # Initialize SimCSE embeddings for query encoding
+    # Initialize PubMedBERT for query encoding
     embeddings = SimCSEEmbeddings(SIMCSE_MODEL_PATH)
     
     rag = RAGPipeline(weaviate_manager, embeddings, llm)
@@ -119,15 +119,15 @@ def initialize_rag_with_simcse():
 
 # Load dataset directly if embeddings already stored
 def load_initialized_rag():
-    """Load an already initialized RAG system without reloading the dataset."""
+    """Load an already initialized RAG system"""
     print("Initializing LLM...")
-    llm = llm_model("meta-llama/Meta-Llama-3.1-8B-Instruct")
+    llm = llm_model("aaditya/OpenBioLLM-Llama3-8B")
 
     print("Connecting to Weaviate...")
     weaviate_manager = WeaviateManager(WEAVIATE_URL, 
             WEAVIATE_API_KEY, hf_token, simcse_model_path=SIMCSE_MODEL_PATH)
     
-    print("Loading SimCSE embeddings...")
+    print("Loading PubMedBERT embeddings...")
     embeddings = SimCSEEmbeddings(SIMCSE_MODEL_PATH)
     
     print("Creating RAG pipeline...")
@@ -146,16 +146,16 @@ client = temp_manager.client
 
 if FORCE_REINDEX:
     if client.collections.exists(collection_name):
-        print("[FORCE] Deleting existing collection...")
+        print("Deleting existing collection...")
         client.collections.delete(collection_name)
     pipeline, weaviate_manager, embeddings = initialize_rag_with_simcse()
 
 elif client.collections.exists(collection_name):
-    print("[INFO] Collection exists. Loading RAG...")
+    print("Collection exists. Loading RAG...")
     pipeline, weaviate_manager, embeddings = load_initialized_rag()
 
 else:
-    print("[INFO] Collection does not exist. Initializing RAG...")
+    print("Collection does not exist. Initializing RAG...")
     pipeline, weaviate_manager, embeddings = initialize_rag_with_simcse()
 
 import torch
@@ -167,7 +167,7 @@ from weaviate.connect import ConnectionParams
 
 # List all collections
 collections = client.collections.list_all()
-print("Collections in Weaviate:")
+print("Collections in currently in Weaviate Database:")
 for collection in collections:
     print("-", collection) 
 

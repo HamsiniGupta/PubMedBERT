@@ -12,7 +12,7 @@ class SimCSEEmbeddings:
         self.device = device
         self.model_path = model_path
 
-        print(f"SimCSE received model_path: {model_path}")
+        print(f"PubMedBERT path: {model_path}")
         print(f"Path exists: {os.path.exists(model_path)}")
         print(f"Path is absolute: {os.path.isabs(model_path)}")
         
@@ -30,7 +30,7 @@ class SimCSEEmbeddings:
         # Load SimCSE components with error handling
         self._load_simcse_components()
         
-        print(f"SimCSE model loaded successfully!")
+        print(f"PubMedBERT loaded successfully!")
         if hasattr(self, 'config'):
             print(f"Pooler type: {self.config.get('pooler_type', 'cls')}")
             print(f"Temperature: {self.config.get('temp', 0.05)}")
@@ -55,7 +55,7 @@ class SimCSEEmbeddings:
                 json.dump(modified_config, f, indent=2)
         
         try:
-            print(f"Loading SimCSE model from {self.model_path}...")
+            print(f"Loading PubMedBERT from {self.model_path}...")
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
             self.model = AutoModel.from_pretrained(self.model_path).to(self.device)
             self.model.eval()
@@ -88,10 +88,8 @@ class SimCSEEmbeddings:
                     print(f"   Base model: {self.config['base_model']}")
                     
                     self.mlp = torch.nn.Identity().to(self.device)
-                    print("Using identity mapping (no MLP projection)")
                     
                 else:
-                    print("simcse_components.pt is not a dictionary, using defaults")
                     self._use_defaults()
                     
             except Exception as e:
@@ -212,9 +210,9 @@ if __name__ == "__main__":
         sim_irrelevant = np.dot(emb_q, emb_u) / (np.linalg.norm(emb_q) * np.linalg.norm(emb_u))
         
         print(f"Medical similarity test:")
-        print(f"   Relevant: {sim_relevant:.3f}")
-        print(f"   Irrelevant: {sim_irrelevant:.3f}")
-        print(f"   Gap: {sim_relevant - sim_irrelevant:.3f}")
+        print(f"Relevant: {sim_relevant:.3f}")
+        print(f"Irrelevant: {sim_irrelevant:.3f}")
+        print(f"Difference: {sim_relevant - sim_irrelevant:.3f}")
         
     except Exception as e:
         print(f"Error: {e}")
