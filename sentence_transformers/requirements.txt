@@ -1,3 +1,4 @@
+absl-py==2.3.1
 accelerate==1.7.0
 ace_tools==0.0
 aiohappyeyeballs==2.6.1
@@ -102,6 +103,7 @@ regex==2024.11.6
 requests==2.32.3
 requests-toolbelt==1.0.0
 rich==14.0.0
+rouge_score==0.1.2
 safetensors==0.5.3
 scikit-learn==1.6.1
 scipy==1.15.3
