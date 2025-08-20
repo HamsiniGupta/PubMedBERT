@@ -16,12 +16,10 @@ cd PubMedBERT/sentence_transformers
 pip install -r requirements.txt
 ```
 
-2. Dataset format 
-- PubMedQA dataset should be split into positive (1) and negative (0) pairs (SimCSE)
-- Columns should be: sent0, sent1, label
-
-3. Model created
-- model will appear in directory output/pubmedqa-supervised-simcse
+# Dataset Format
+The PubMedQA dataset should be formatted for SimCSE training:
+Columns: sent0, sent1, label
+Labels: Positive pairs (1), Negative pairs (0)
 
 # Preprocessing Data
 ```bash
