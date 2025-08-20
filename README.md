@@ -18,8 +18,8 @@ pip install -r requirements.txt
 
 # Dataset Format
 The PubMedQA dataset should be formatted for SimCSE training:
-Columns: sent0, sent1, label
-Labels: Positive pairs (1), Negative pairs (0)
+- Columns: sent0, sent1, label
+- Labels: Positive pairs (1), Negative pairs (0)
 
 # Preprocessing Data
 ```bash
