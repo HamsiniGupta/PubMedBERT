@@ -4,7 +4,10 @@ Large Language Models struggle with biomedical Q/A due to hallucinations and out
 Our implementation of the RAG framework includes testing the PubMedBERT model with Llama3-OpenBioLLM-8B (achieving 64% accuracy) and Llama-3.1-8B (achieving 61% accuracy).
 
 
-
+# Quick Start
+git clone https://github.com/HamsiniGupta/PubMedBERT
+cd PubMedBERT/sentence_transformers
+pip install -r requirements.txt
 
 
 
