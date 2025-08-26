@@ -34,13 +34,13 @@ def extract_simcse_embeddings(model, texts):
         embeddings.append(np.array(emb))
     return np.vstack(embeddings)
 
-def test_validation_set(validation_csv, baseline_model, baseline_tokenizer, trained_model):
-    """Test on validation set"""
+def test_file_set(test_csv, baseline_model, baseline_tokenizer, trained_model):
+    """Test on test set"""
     
-    print(f"Loading validation data from {validation_csv}...")
-    df = pd.read_csv(validation_csv)
+    print(f"Loading test data from {test_csv}...")
+    df = pd.read_csv(test_csv)
     
-    print(f"Loaded {len(df)} validation pairs")
+    print(f"Loaded {len(df)} test pairs")
     print(f"Positive pairs (label=1): {sum(df['label'] == 1)}")
     print(f"Negative pairs (label=0): {sum(df['label'] == 0)}")
     
@@ -194,10 +194,10 @@ if __name__ == "__main__":
         print("Loading PubMedBERT...")
         trained_model = SimCSEEmbeddings("../output/pubmedqa-supervised-simcse")
         
-        # Test on validation set
-        validation_file = '../data/pubmedqa_val_clean.csv'  
-        print("Testing on validation set...")
-        results = test_validation_set(validation_file, baseline_model, baseline_tokenizer, trained_model)
+        # Test on test set
+        test_file = '../data/pubmedqa_test_clean.csv'  
+        print("Testing on test set...")
+        results = test_file_set(test_file, baseline_model, baseline_tokenizer, trained_model)
         
         # Analyze performance
         performance_metrics = analyze_performance_with_labels(results)
@@ -222,7 +222,7 @@ if __name__ == "__main__":
             print(f"Summary metrics saved to 'summary_embeddings.csv'")
         
     except FileNotFoundError as e:
-        print(f"Error: Could not find validation file: {e}")
+        print(f"Error: Could not find test file: {e}")
     except Exception as e:
         print(f"Error: {str(e)}")
         import traceback
