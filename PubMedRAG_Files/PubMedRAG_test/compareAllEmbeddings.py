@@ -27,7 +27,7 @@ def extract_bert_embeddings(model, tokenizer, texts, device):
     return np.vstack(embeddings)
 
 def extract_simcse_embeddings(model, texts):
-    """Extract embeddings from PubMedBERT model"""
+    """Extract embeddings from PubMedRAG model"""
     embeddings = []
     for text in texts:
         emb = model.embed_query(text)
@@ -66,7 +66,7 @@ def test_file_set(test_csv, baseline_model, baseline_tokenizer, trained_model):
             baseline_embs = extract_bert_embeddings(baseline_model, baseline_tokenizer, 
                                                   test_texts, device)
             
-            # PubMedBERT Embeddings
+            # PubMedRAG Embeddings
             trained_embs = extract_simcse_embeddings(trained_model, test_texts)
             
             # Calculate similarities
@@ -131,14 +131,14 @@ def analyze_performance_with_labels(results):
     
     print(f"\n ROC-AUC Comparison")
     print(f"Baseline BERT AUC: {baseline_auc:.4f}")
-    print(f"PubMedBERT AUC: {trained_auc:.4f}")
+    print(f"PubMedRAG AUC: {trained_auc:.4f}")
     print(f"AUC improvement: {trained_auc - baseline_auc:+.4f}")
     
     # Threshold analysis for both models
     thresholds = [0.3, 0.4, 0.5, 0.6, 0.7, 0.75, 0.8]
     
     print(f"\nThreshold Analysis")
-    print("Threshold | BERT F1 | PubMedBERT F1 | Improvement")
+    print("Threshold | BERT F1 | PubMedRAG F1 | Improvement")
     print("-" * 50)
     
     for threshold in thresholds:
@@ -190,8 +190,8 @@ if __name__ == "__main__":
         baseline_tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-uncased")
         baseline_model = AutoModel.from_pretrained("google-bert/bert-base-uncased")
         
-        # Load PubMEdBERT
-        print("Loading PubMedBERT...")
+        # Load PubMedRAG
+        print("Loading PubMedRAG...")
         trained_model = SimCSEEmbeddings("../output/pubmedqa-supervised-simcse")
         
         # Test on test set
@@ -205,8 +205,8 @@ if __name__ == "__main__":
         # Save results
         if results:
             df_results = pd.DataFrame(results)
-            df_results.to_csv('../data/PubMedBERT_vs_BERT_Embeddings.csv', index=False)
-            print(f"\nResults saved to 'PubMedBERT_vs_BERT_Embeddings.csv'")
+            df_results.to_csv('../data/PubMedRAG_vs_BERT_Embeddings.csv', index=False)
+            print(f"\nResults saved to 'PubMedRAG_vs_BERT_Embeddings.csv'")
             
             # Save summary metrics
             summary = {

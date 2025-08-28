@@ -8,7 +8,7 @@ from SimCSEEmbeddings import SimCSEEmbeddings
 
 def evaluate_simcse_embeddings(model_path, eval_file="data/pubmedqa_test_clean.csv"):
 
-    print("Loading PubMedBERT model...")
+    print("Loading PubMedRAG model...")
     embeddings_model = SimCSEEmbeddings(model_path)
     
     print("Loading evaluation data...")
@@ -42,7 +42,7 @@ def evaluate_simcse_embeddings(model_path, eval_file="data/pubmedqa_test_clean.c
     
     # Calculate metrics
     print("\n" + "="*50)
-    print("PubMedBERT Embedding Evaluation Results")
+    print("PubMedRAG Embedding Evaluation Results")
     print("="*50)
     
     # Basic statistics
@@ -93,7 +93,7 @@ def evaluate_simcse_embeddings(model_path, eval_file="data/pubmedqa_test_clean.c
     plt.hist(pos_similarities, bins=30, alpha=0.7, label='Relevant (1)', color='green')
     plt.xlabel('Cosine Similarity', fontsize = 18)
     plt.ylabel('Frequency', fontsize = 18)
-    plt.title('PubMedBERT Evaluation', fontsize = 18)
+    plt.title('PubMedRAG Evaluation', fontsize = 18)
     plt.legend(fontsize=13)  
     
     # Plot 2: Scatter plot
@@ -106,7 +106,7 @@ def evaluate_simcse_embeddings(model_path, eval_file="data/pubmedqa_test_clean.c
     plt.ylim(-0.5, 1.5)
     
     plt.tight_layout()
-    plt.savefig('../plots/PubMedBERT_Embeddings_Visuals.png', dpi=300, bbox_inches='tight')
+    plt.savefig('../plots/PubMedRAG_Embeddings_Visuals.png', dpi=300, bbox_inches='tight')
     plt.show()
     
     # Summary assessment
@@ -166,6 +166,6 @@ if __name__ == "__main__":
     EVAL_DATA_PATH = os.path.abspath(os.path.join(CURRENT_DIR, "..", "data", "pubmedqa_test_clean.csv"))
 
     results = evaluate_simcse_embeddings(MODEL_PATH, EVAL_DATA_PATH)
-    save_results(results, '../data/pubmedbert_embedding_results_file.json')
+    save_results(results, '../data/pubmedrag_embedding_results_file.json')
 
-    print("\nCheck PubMedBERT_Embeddings_Visuals.png for visualizations.")
+    print("\nCheck PubMedRAG_Embeddings_Visuals.png for visualizations.")

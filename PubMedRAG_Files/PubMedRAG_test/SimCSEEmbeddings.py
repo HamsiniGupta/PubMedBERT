@@ -12,7 +12,7 @@ class SimCSEEmbeddings:
         self.device = device
         self.model_path = model_path
 
-        print(f"PubMedBERT path: {model_path}")
+        print(f"PubMedRAG path: {model_path}")
         print(f"Path exists: {os.path.exists(model_path)}")
         print(f"Path is absolute: {os.path.isabs(model_path)}")
         
@@ -30,7 +30,7 @@ class SimCSEEmbeddings:
         # Load SimCSE components with error handling
         self._load_simcse_components()
         
-        print(f"PubMedBERT loaded successfully!")
+        print(f"PubMedRAG loaded successfully!")
         if hasattr(self, 'config'):
             print(f"Pooler type: {self.config.get('pooler_type', 'cls')}")
             print(f"Temperature: {self.config.get('temp', 0.05)}")
@@ -55,7 +55,7 @@ class SimCSEEmbeddings:
                 json.dump(modified_config, f, indent=2)
         
         try:
-            print(f"Loading PubMedBERT from {self.model_path}...")
+            print(f"Loading PubMedRAG from {self.model_path}...")
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
             self.model = AutoModel.from_pretrained(self.model_path).to(self.device)
             self.model.eval()

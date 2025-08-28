@@ -89,7 +89,7 @@ if not WEAVIATE_API_KEY:
     raise ValueError("Weaviate API key not found in environment variables")
 
 def initialize_rag_with_simcse():
-    """Initialize the RAG system with PubMedBERT"""
+    """Initialize the RAG system with PubMedRAG"""
     print("Initializing LLM...")
     llm = llm_model("aaditya/OpenBioLLM-Llama3-8B")
 
@@ -101,13 +101,13 @@ def initialize_rag_with_simcse():
     dataset = PubMedQAProcessor.load_pubmedqa_dataset()
     documents = PubMedQAProcessor.process_contexts_to_documents(dataset)
 
-    print("Reindexing documents with PubMedBERT...")
+    print("Reindexing documents with PubMedRAG...")
     collection_name = weaviate_manager.reindex_with_simcse(documents, "output/pubmedqa-supervised-simcse")
     
     weaviate_manager.collection_name = collection_name
 
     print("Creating RAG pipeline...")
-    # Initialize PubMedBERT for query encoding
+    # Initialize PubMedRAG for query encoding
     embeddings = SimCSEEmbeddings(SIMCSE_MODEL_PATH)
     
     rag = RAGPipeline(weaviate_manager, embeddings, llm)
@@ -127,7 +127,7 @@ def load_initialized_rag():
     weaviate_manager = WeaviateManager(WEAVIATE_URL, 
             WEAVIATE_API_KEY, hf_token, simcse_model_path=SIMCSE_MODEL_PATH)
     
-    print("Loading PubMedBERT embeddings...")
+    print("Loading PubMedRAG embeddings...")
     embeddings = SimCSEEmbeddings(SIMCSE_MODEL_PATH)
     
     print("Creating RAG pipeline...")
@@ -136,7 +136,7 @@ def load_initialized_rag():
 
     return pipeline, weaviate_manager, embeddings  
 
-collection_name = "PMQA_PubMedBert"
+collection_name = "PMQA_PubMedRAG"
 FORCE_REINDEX = False
 
 # Temporary client to check collection existence
@@ -172,7 +172,7 @@ for collection in collections:
     print("-", collection) 
 
 # Import the test generation script
-from testPubMedBert import run_test_generation
+from testPubMedRAG import run_test_generation
 
 print("\nGenerating Test Results for Evaluation...")
 

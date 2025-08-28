@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Evaluate PubMedBert model on pubmedqa_test_clean.csv
+Evaluate PubMedRAG model on pubmedqa_test_clean.csv
 """
 
 import pandas as pd
@@ -14,7 +14,7 @@ from SimCSEEmbeddings import SimCSEEmbeddings
 
 def evaluate_simcse_embeddings(model_path, eval_file="../data/pubmedqa_test_clean.csv"):
 
-    print("Loading PubMedBERT...")
+    print("Loading PubMedRAG...")
     embeddings_model = SimCSEEmbeddings(model_path)
     
     print("Loading evaluation data...")
@@ -47,7 +47,7 @@ def evaluate_simcse_embeddings(model_path, eval_file="../data/pubmedqa_test_clea
     labels = np.array(labels)
     
     print("\n" + "="*50)
-    print("PubMedBERT Evaluation Results")
+    print("PubMedRAG Evaluation Results")
     print("="*50)
     
     pos_similarities = similarities[labels == 1]

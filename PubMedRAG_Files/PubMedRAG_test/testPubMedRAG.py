@@ -11,8 +11,8 @@ import torch, gc
 
 start = time.time()
 
-def generate_test_results_from_json(pipeline, weaviate_manager, embeddings, json_file="../data/actual_testing_dataset.json", max_samples=50, output_file="pubmedbert_test_results.csv"):
-    """Generate test results using PubMedBERT embeddings"""
+def generate_test_results_from_json(pipeline, weaviate_manager, embeddings, json_file="../data/actual_testing_dataset.json", max_samples=50, output_file="PubMedRAG_test_results.csv"):
+    """Generate test results using PubMedRAG embeddings"""
     
     # Check if the dataset file exists
     if not os.path.exists(json_file):
@@ -75,7 +75,7 @@ def generate_test_results_from_json(pipeline, weaviate_manager, embeddings, json
 
     results = []
 
-    print(f"Generating results for {len(test_items)} questions using PubMedBERT embeddings...")
+    print(f"Generating results for {len(test_items)} questions using PubMedRAG embeddings...")
 
     for i, item in enumerate(test_items):
         question = item['question']
@@ -93,7 +93,7 @@ def generate_test_results_from_json(pipeline, weaviate_manager, embeddings, json
         try:
             start_time = time.time()
 
-            print(f"Searching with PubMedBERT embeddings for: {question[:50]}...")
+            print(f"Searching with PubMedRAG embeddings for: {question[:50]}...")
             
             retrieved_docs = weaviate_manager.search_documents(query=question, limit=2)
 
@@ -130,7 +130,7 @@ def generate_test_results_from_json(pipeline, weaviate_manager, embeddings, json
                 'retrieval_score_1': doc1_score,
                 'retrieval_score_2': doc2_score,
                 'question_id': i,
-                'embedding_model': 'PubMedBERT',
+                'embedding_model': 'PubMedRAG',
                 'embedding_dimension': embedding_dim,
                 'year': item.get('year', ''),
                 'meshes': str(item.get('meshes', []))  
@@ -139,14 +139,14 @@ def generate_test_results_from_json(pipeline, weaviate_manager, embeddings, json
             print(f"Predicted: {rag_response}")
 
         except Exception as e:
-            print(f"Error processing question {i+1} with PubMedBERT: {e}")
+            print(f"Error processing question {i+1} with PubMedRAG: {e}")
             traceback.print_exc()
 
             result = {
                 'question': question,
-                'Context1': "Error retrieving context with PubMedBERT",
-                'Context2': "Error retrieving context with PubMedBERT", 
-                'Answer': f"PubMedBERT Error: {str(e)}",
+                'Context1': "Error retrieving context with PubMedRAG",
+                'Context2': "Error retrieving context with PubMedRAG", 
+                'Answer': f"PubMedRAG Error: {str(e)}",
                 'Ground_truth': true_answer,
                 'Long_answer': long_answer,
                 'pubid': pubid,
@@ -154,7 +154,7 @@ def generate_test_results_from_json(pipeline, weaviate_manager, embeddings, json
                 'retrieval_score_1': 0,
                 'retrieval_score_2': 0,
                 'question_id': i,
-                'embedding_model': 'PubMedBERT',
+                'embedding_model': 'PubMedRAG',
                 'embedding_dimension': 768,
                 'year': item.get('year', ''),
                 'meshes': str(item.get('meshes', []))
@@ -172,7 +172,7 @@ def generate_test_results_from_json(pipeline, weaviate_manager, embeddings, json
     df.to_csv(output_file, index=False)
 
     print(f"\nResults saved to {output_file}")
-    print(f"Generated {len(results)} test results using PubMedBERT embeddings")
+    print(f"Generated {len(results)} test results using PubMedRAG embeddings")
     print(f"Columns: {list(df.columns)}")
 
     return df
@@ -183,7 +183,7 @@ def quick_accuracy_check(df):
         if not text or pd.isna(text):
             return 'unknown'
         text = str(text).lower().strip()
-        print(f"PubMedBERT model response: {text}")
+        print(f"PubMedRAG model response: {text}")
         if 'yes' in text:
             return 'yes'
         elif 'no' in text:
@@ -199,7 +199,7 @@ def quick_accuracy_check(df):
     total = len(df)
     accuracy = correct / total if total > 0 else 0
     
-    print(f"\nQuick Accuracy Check (PubMedBERT-based):")
+    print(f"\nQuick Accuracy Check (PubMedRAG-based):")
     print(f"Correct: {correct}/{total}")
     print(f"Accuracy: {accuracy:.3f}")
     
@@ -264,7 +264,7 @@ def calculate_precision_recall_f1(df):
     accuracy = correct / total if total > 0 else 0
     
     print("\n" + "="*60)
-    print("Precision, Recall, and F1 score Table for PubMedBERT")
+    print("Precision, Recall, and F1 score Table for PubMedRAG")
     print("="*60)
     
     # Header
@@ -287,7 +287,7 @@ def calculate_precision_recall_f1(df):
     print(f"{'Accuracy':<10} {'':<12} {'':<12} {accuracy:<12.3f}")
     
     print("\n" + "="*60)
-    print("Metrics Table for PubMedBERT")
+    print("Metrics Table for PubMedRAG")
     print("="*60)
     
     for label in ordered_labels:
@@ -322,7 +322,7 @@ def detailed_confusion_analysis(df):
         df['true_label'] = df['Ground_truth'].apply(extract_decision)
     
     print("="*60)
-    print("Confusion Matrix for PubMedBERT")
+    print("Confusion Matrix for PubMedRAG")
     print("="*60)
     
     # Get unique labels
@@ -351,7 +351,7 @@ def detailed_confusion_analysis(df):
         print()
     
     # Detailed breakdown
-    print(f"\nDetailed Error Analysis (PubMedBERT):")
+    print(f"\nDetailed Error Analysis (PubMedRAG):")
     total_questions = len(df)
     
     for true_label in all_labels:
@@ -364,7 +364,7 @@ def detailed_confusion_analysis(df):
                 else:
                     print(f"TRUE '{true_label}' PREDICTED '{pred_label}': {count} cases ({percentage:.1f}%) - ERROR")
     
-    print(f"\nPer Class Performance (PubMedBERT):")
+    print(f"\nPer Class Performance (PubMedRAG):")
     for true_label in all_labels:
         total_true = sum(confusion_counts[(true_label, pred)] for pred in all_labels)
         correct_true = confusion_counts[(true_label, true_label)]
@@ -385,14 +385,14 @@ def detailed_confusion_analysis(df):
         most_common_error = errors[0]
         true_label, pred_label, count = most_common_error
         
-        print(f"\nExample cases where TRUE='{true_label}' but PREDICTED='{pred_label}' (PubMedBERT):")
+        print(f"\nExample cases where TRUE='{true_label}' but PREDICTED='{pred_label}' (PubMedRAG):")
         error_cases = df[(df['true_label'] == true_label) & (df['predicted_label'] == pred_label)]
         
         for i, (_, row) in enumerate(error_cases.head(3).iterrows()):
             print(f"\nExample {i+1}:")
             print(f"Question: {row['question'][:80]}...")
             print(f"Ground Truth: {row['Ground_truth']}")
-            print(f"PubMedBERT Model Answer: {row['Answer'][:100]}...")
+            print(f"PubMedRAG Model Answer: {row['Answer'][:100]}...")
             print(f"Context Quality Score: {row.get('retrieval_score_1', 'N/A')}")
             print(f"Embedding Model: {row.get('embedding_model', 'Unknown')}")
     
@@ -400,9 +400,9 @@ def detailed_confusion_analysis(df):
 
 def run_test_generation(pipeline, weaviate_manager, embeddings, dataset_file="../data/actual_testing_dataset.json"):
     
-    output_file = "../data/pubmedbert_evaluation_data.csv"
+    output_file = "../data/pubmedrag_evaluation_data.csv"
     
-    print("Starting test result generation for PubMedBERT evaluation...")
+    print("Starting test result generation for PubMedRAG evaluation...")
     print(f"Using dataset: {dataset_file}")
     
     df = generate_test_results_from_json(
@@ -427,14 +427,14 @@ def run_test_generation(pipeline, weaviate_manager, embeddings, dataset_file="..
     total_time = end - start
     
     print(f"\n{'='*50}")
-    print(f"PubMedBERT Evaluation Results")
+    print(f"PubMedRAG Evaluation Results")
     print(f"{'='*50}")
     print(f"Overall Accuracy: {accuracy:.2%} ({sum(df['predicted_label'] == df['true_label'])}/{len(df)})")
     
     print(f"File: {output_file}")
     print(f"Questions: {len(df)}")
     print(f"Accuracy: {accuracy:.3f}")
-    print(f"Embedding Model: PubMedBERT")
+    print(f"Embedding Model: PubMedRAG")
     print(f"Source Dataset: {dataset_file}")
     print(f"Total evaluation time: {total_time:.3f} seconds")
     print(f"Use this file in your:")
@@ -445,5 +445,5 @@ def run_test_generation(pipeline, weaviate_manager, embeddings, dataset_file="..
     return df, output_file, metrics
 
 if __name__ == "__main__":
-    print("Import this script and call run_test_generation() with PubMedBERT pipeline objects")
+    print("Import this script and call run_test_generation() with PubMedRAG pipeline objects")
     print("(run_test_generation(pipeline, weaviate_manager, embeddings, dataset_file='actual_testing_dataset.json')")

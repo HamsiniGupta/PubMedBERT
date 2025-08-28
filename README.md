@@ -1,6 +1,6 @@
-# PubMedBERT: Retrieval-Augmented Generation for Biomedical Question Answering
+# PubMedRAG: Retrieval-Augmented Generation for Biomedical Question Answering
 
-Large Language Models struggle with biomedical Q&A due to hallucinations and outdated knowledge. This research addresses these limitations by developing PubMedBERT, a domain-specific retriever model trained using Simple Contrastive Sentence Embeddings (SimCSE) on the PubMedQA labeled dataset.
+Large Language Models struggle with biomedical Q&A due to hallucinations and outdated knowledge. This research addresses these limitations by developing PubMedRAG, a domain-specific retriever model trained using Simple Contrastive Sentence Embeddings (SimCSE) on the PubMedQA labeled dataset.
 
 ## Key Results
 
@@ -11,8 +11,8 @@ Large Language Models struggle with biomedical Q&A due to hallucinations and out
 ## Installation
 
 ```bash
-git clone https://github.com/HamsiniGupta/PubMedBERT
-cd PubMedBERT/sentence_transformers
+git clone https://github.com/HamsiniGupta/PubMedRAG
+cd PubMedRAG/sentence_transformers
 pip install -r requirements.txt
 ```
 
@@ -34,7 +34,7 @@ python train.py --train_file data/pubmedqa_train_supervised.csv --epochs 5
 ```
 ## Evaluation
 ```bash
-# Compare PubMedBERT and BERT and evaluate results
+# Compare PubMedRAG and BERT and evaluate results
 python compareAllEmbeddings.py
 ```
 
