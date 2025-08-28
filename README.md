@@ -12,7 +12,7 @@ Large Language Models struggle with biomedical Q&A due to hallucinations and out
 
 ```bash
 git clone https://github.com/HamsiniGupta/PubMedRAG
-cd PubMedRAG/sentence_transformers
+cd PubMedRAG/PubMedRAG_Files
 pip install -r requirements.txt
 ```
 
