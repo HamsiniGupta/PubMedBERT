@@ -34,6 +34,8 @@ python train.py --train_file data/pubmedqa_train_supervised.csv --epochs 5
 ```
 ## Evaluation
 ```bash
+#Get results for PubMedRAG
+python testPubMedRAG.py
 # Compare PubMedRAG and BERT and evaluate results
 python compareAllEmbeddings.py
 ```
