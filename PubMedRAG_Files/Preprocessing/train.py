@@ -24,53 +24,53 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
                     level=logging.INFO,
                     handlers=[LoggingHandler()])
 
-def load_supervised_data(csv_file, validation_split=0.1):
+def load_supervised_data(train_file, val_file):
+    """Load the files created from preprocess.py"""
 
-    logging.info(f"Loading supervised data from {csv_file}")
+    logging.info(f"Loading supervised data...")
+    logging.info(f"Train file: {train_file}")
+    logging.info(f"Validation file: {val_file}")
     
-    # Load the CSV file
-    df = pd.read_csv(csv_file)
+    train_df = pd.read_csv(train_file)
+    if 'sent0' not in train_df.columns:
+        train_df.columns = ['sent0', 'sent1', 'label']
     
-    required_cols = ['sent0', 'sent1', 'label']
-    if not all(col in df.columns for col in required_cols):
-        df.columns = ['sent0', 'sent1', 'label']
-    
-    # Clean the data
-    df = df.dropna()
-    df = df[df['sent0'].str.len() > 10]  
-    df = df[df['sent1'].str.len() > 10]
-    
-    logging.info(f"Loaded {len(df)} samples")
-    logging.info(f"Positive samples: {sum(df['label'] == 1)}")
-    logging.info(f"Negative samples: {sum(df['label'] == 0)}")
-    
-    # Split into train and validation
-    train_df, val_df = train_test_split(
-        df, 
-        test_size=validation_split, 
-        random_state=42,
-        stratify=df['label']  # Maintain label balance
-    )
-    
-    logging.info(f"Train samples: {len(train_df)}")
-    logging.info(f"Validation samples: {len(val_df)}")
-    
-    # Create training samples for contrastive learning
+    val_df = pd.read_csv(val_file)
+    if 'sent1' not in val_df.columns:
+        val_df.columns = ['sent0', 'sent1', 'label']
+    else:
+        # preprocess.py uses sent1/sent2 for val and test files
+        val_df = val_df.rename(columns={'sent1': 'sent0', 'sent2': 'sent1'})
+
+    # Clean data
+    train_df = train_df.dropna()
+    val_df = val_df.dropna()
+
+    logging.info(f"Loaded {len(train_df)} training samples")
+    logging.info(f"Loaded {len(val_df)} validation samples")
+    logging.info(f"Training - Positive: {sum(train_df['label'] == 1)}, Negative: {sum(train_df['label'] == 0)}")
+    logging.info(f"Validation - Positive: {sum(val_df['label'] == 1)}, Negative: {sum(val_df['label'] == 0)}")
+
+   # Create training samples with labels for ContrastiveLoss
     train_samples = []
     for _, row in train_df.iterrows():
-        train_samples.append(InputExample(texts=[row['sent0'], row['sent1']]))
+        train_samples.append(InputExample(
+            texts=[row['sent0'], row['sent1']], 
+            label=float(row['label'])
+        ))
     
-    # Create validation samples for evaluation
+    # Create validation samples
     val_samples = []
     val_labels = []
     for _, row in val_df.iterrows():
         val_samples.append(InputExample(texts=[row['sent0'], row['sent1']]))
         val_labels.append(int(row['label']))
     
-    logging.info(f"Created {len(train_samples)} training pairs")
+    logging.info(f"Created {len(train_samples)} training pairs with labels")
     logging.info(f"Created {len(val_samples)} validation pairs")
     
     return train_samples, val_samples, val_labels
+
 
 def create_model(model_name, max_seq_length=256):
     """
@@ -173,14 +173,14 @@ def train_model(model, train_samples, val_samples, val_labels, args):
     # Configure training
     train_dataloader = DataLoader(train_samples, shuffle=True, batch_size=args.batch_size)
     
-    # Use MultipleNegativesRankingLoss for contrastive learning
-    train_loss = losses.MultipleNegativesRankingLoss(model)
+    # Use ContrastiveLoss for contrastive learning
+    train_loss = losses.ContrastiveLoss(model)
     
     # Calculate warmup steps
     warmup_steps = math.ceil(len(train_dataloader) * args.epochs * 0.1)  # 10% of train data
     logging.info(f"Warmup steps: {warmup_steps}")
     
-    logging.info("Starting supervised training with validation monitoring")
+    logging.info("Starting supervised contrastive training with validation monitoring")
     logging.info(f"Training on {len(train_samples)} pairs")
     logging.info(f"Validating on {len(val_samples)} pairs ({sum(val_labels)} positive)")
     
@@ -193,8 +193,8 @@ def train_model(model, train_samples, val_samples, val_labels, args):
         warmup_steps=warmup_steps,
         output_path=args.output_dir,
         save_best_model=True,  # Save best model based on validation
-        show_progress_bar=True
-        # Remove callback for now to avoid the error
+        show_progress_bar=True,
+        callback=loss_tracker
     )
     
     logging.info(f"Training completed!")
@@ -219,10 +219,20 @@ def evaluate_final_model(model_path, val_samples, val_labels):
     # Create final evaluator
     final_evaluator = create_evaluator(val_samples, val_labels, "final_evaluation")
     
-    # Run evaluation
-    final_score = final_evaluator(model, output_path=model_path)
+    # Run evaluation - returns a dict of metrics
+    final_results = final_evaluator(model, output_path=model_path)
     
-    logging.info(f"Final model performance: {final_score:.4f}")
+    # Log the results properly
+    logging.info(f"Final model results: {final_results}")
+    
+    # Extract specific metrics if available
+    if isinstance(final_results, dict):
+        if 'accuracy' in final_results:
+            logging.info(f"Final accuracy: {final_results['accuracy']:.4f}")
+        if 'f1' in final_results:
+            logging.info(f"Final F1: {final_results['f1']:.4f}")
+    else:
+        logging.info(f"Final model performance: {final_results:.4f}")
     
     # Test with example pairs
     if len(val_samples) > 0:
@@ -247,7 +257,7 @@ def evaluate_final_model(model_path, val_samples, val_labels):
         logging.info(f"Difference: {pos_similarity - neg_similarity:.4f}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Train supervised SimCSE on PubMedQA data')
+    parser = argparse.ArgumentParser(description='Train supervised contrastive model on PubMedQA data')
     
     # Model arguments
     parser.add_argument('--model_name', type=str, 
@@ -258,10 +268,10 @@ def main():
     
     # Data arguments
     parser.add_argument('--train_file', type=str, 
-                       default='data/pubmedqa_train_supervised.csv',
-                       help='Path to supervised PubMedQA CSV file')
-    parser.add_argument('--validation_split', type=float, default=0.1,
-                       help='Fraction of data to use for validation')
+                       default='../data/pubmedqa_train_supervised.csv',
+                       help='Path to pre-split training CSV file')
+    parser.add_argument('--val_file', type=str, default='../data/pubmedqa_val_clean.csv',
+                       help='Path to pre-split validation CSV file')
     
     # Training arguments
     parser.add_argument('--batch_size', type=int, default=16,
@@ -273,7 +283,7 @@ def main():
     
     # Output arguments
     parser.add_argument('--output_dir', type=str, 
-                       default=f'output/pubmedqa-supervised-simcse',
+                       default=f'../output/pubmedqa-supervised-simcse',
                        help='Output directory for saved model')
     
     args = parser.parse_args()
@@ -283,16 +293,16 @@ def main():
     
     logging.info("Starting PubMedQA supervised SimCSE Training")
     logging.info(f"Model: {args.model_name}")
-    logging.info(f"Data: {args.train_file}")
+    logging.info(f"Train file: {args.train_file}")
+    logging.info(f"Validation file: {args.val_file}")
     logging.info(f"Output: {args.output_dir}")
     logging.info(f"Batch size: {args.batch_size}")
     logging.info(f"Epochs: {args.epochs}")
-    logging.info(f"Validation split: {args.validation_split}")
     
     # Load supervised data
     train_samples, val_samples, val_labels = load_supervised_data(
-        args.train_file, 
-        args.validation_split
+        args.train_file,
+        args.val_file, 
     )
     
     if not train_samples:

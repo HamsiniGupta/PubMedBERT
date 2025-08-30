@@ -4,123 +4,92 @@ tags:
 - sentence-similarity
 - feature-extraction
 - generated_from_trainer
-- dataset_size:3916
-- loss:MultipleNegativesRankingLoss
+- dataset_size:8144
+- loss:ContrastiveLoss
 base_model: google-bert/bert-base-uncased
 widget:
-- source_sentence: 'Maternal creatine homeostasis is altered during gestation in the
-    spiny mouse: is this a metabolic adaptation to pregnancy?'
+- source_sentence: Are sports medicine journals relevant and applicable to practitioners
+    and athletes?
   sentences:
-  - Data for 432 participants were entered into the analysis. Recruits in the Army
-    sample had a significantly greater prevalence of dental decay and greater treatment
-    resource need than either of the other two Services. Army recruits had a mean
-    number of 2.59 (2.08, 3.09) decayed teeth per recruit, compared to 1.93 (1.49,
-    2.39 p<0.01) in Royal Navy recruits and 1.26 (0.98, 1.53 p<0.001) in Royal Air
-    Force recruits. Among Army recruits 62.7% were from the two most deprived quintiles
-    of the Index of Multiple Deprivation compared to 42.5% of Royal Naval recruits
-    and 36.6% of Royal Air Force recruits.
-  - In our study, it was observed that although longer ETA was associated with longer
-    hospitalization, ETA was not correlated with postoperative complications. Our
-    results inclined toward the position that appendectomy can be performed as a semielective
-    surgery.
-  - Plasma creatine concentration and urinary excretion were measured from mid to
-    late gestation in pregnant (n = 8) and age-matched virgin female spiny mice (n
-    = 6). At term, body composition and organ weights were assessed and tissue total
-    creatine content determined. mRNA expression of the creatine synthesising enzymes
-    arginine:glycine amidinotransferase (AGAT) and guanidinoacetate methyltransferase
-    (GAMT), and the creatine transporter (CrT1) were assessed by RT-qPCR. Protein
-    expression of AGAT and GAMT was also assessed by western blot analysis.
-- source_sentence: We replicated the selection procedure of Stock et al. using data
-    on 290,919 children aged 0-17 years insured in the Gmünder ErsatzKasse (GEK) in
-    2005. Asthma prevalence was also estimated in a sample of 17,641 children aged
-    0-17 years participating in the German Health Interview and Examination Survey
-    for Children and Adolescents (KiGGS) from 2003 to 2006.
+  - Studies on coronary risk factors in men and women are mainly based on mortality
+    data and few compare results of both sexes with consistent study design and diagnostic
+    criteria. This study assesses the major risk factors for coronary events in men
+    and women from the Reykjavik Study.
+  - There is a dearth of studies addressing diagnostic and treatment interventions
+    in the sports medicine literature. The evidence base for sports medicine must
+    continue to increase in terms of volume and quality.
+  - Hypotheses for this discontent are presented. Physicians may be uninterested in
+    helping caregivers; even if they were receptive to counseling caregivers, they
+    could be poorly remunerated for the types of counseling sessions that are usual
+    for caregivers; and being a professional caregiver to family caregivers is demanding
+    in itself.
+- source_sentence: Is Bare-Metal Stent Implantation Still Justifiable in High Bleeding
+    Risk Patients Undergoing Percutaneous Coronary Intervention?
   sentences:
-  - The rate of early infection without antibiotic prophylaxis before TIVAD placement
-    in the interventional radiology suite is<1%. Based on these data, use of prophylactic
-    antibiotics for TIVAD placement is not recommended.
-  - Alcohol-associated cues elicit craving in human addicts but little is known about
-    craving mechanisms. Current animal models focus on relapse and this may confound
-    the effect of environmental cues. OBJECTIVES. To develop a model to study the
-    effects of environmental cues on alcohol consumption in animals not experiencing
-    withdrawal or relapse.
-  - When additional validation studies were taken into account, asthma medications
-    were found to be prescribed not only for asthma but also for other respiratory
-    diseases. In addition, not all children with current asthma had prescriptions.
-    We therefore conclude that asthma medications are therefore not a good proxy for
-    the disease.
-- source_sentence: Is the holmium:YAG laser the best intracorporeal lithotripter for
-    the ureter?
+  - 'Compared with patients without, those with 1 or more HBR criteria had worse outcomes,
+    owing to higher ischemic and bleeding risks. Among HBR patients, major adverse
+    cardiovascular events occurred in 22.6% of the E-ZES and 29% of the BMS patients
+    (hazard ratio: 0.75; 95% confidence interval: 0.57 to 0.98; p = 0.033), driven
+    by lower myocardial infarction (3.5% vs. 10.4%; p<0.001) and target vessel revascularization
+    (5.9% vs. 11.4%; p = 0.005) rates in the E-ZES arm. The composite of definite
+    or probable stent thrombosis was significantly reduced in E-ZES recipients, whereas
+    bleeding events did not differ between stent groups.'
+  - MDA on its own was insufficient to control the prevalence of schistosomiasis,
+    intensity of Schistosoma infection, or morbidity of the disease. Alternative control
+    measures will be needed to complement the existing national MDA program.
+  - A task-specific intervention designed to improve gait speed may potentially provide
+    secondary benefits by positively impacting depression, mobility and social participation
+    for people post stroke.
+- source_sentence: 'In vivo visualization of pyloric mucosal hypertrophy in infants
+    with hypertrophic pyloric stenosis: is there an etiologic role?'
   sentences:
-  - The participants' mean +/- standard deviation (SD) age was 74.7 +/- 12.2 years.
-    Almost one half of them (n = 46; 44.7%) were considered to have severe vision
-    impairment (presenting visual acuity<6/60 in the better eye). Disordered thresholds
-    were evident initially. Collapsing the two middle categories produced ordered
-    thresholds and fit to the Rasch model (chi = 10.1; degrees of freedom = 9; p =
-    0.34). The mean (SD) items and persons Fit Residual values were -0.31 (1.12) and
-    -0.25 (0.78), respectively, where optimal fit of data to the Rasch model would
-    have a mean = 0 and SD = 1. Unidimensionality was demonstrated confirming the
-    construct validity of the PHQ-9 and there was no evidence of differential item
-    functioning on a number of factors including visual disability. The person separation
-    reliability value was 0.80 indicating that the PHQ-9 has satisfactory precision.
-    There was a degree of mistargeting as expected in this largely non-clinically
-    depressed sample.
-  - There were 7 type I Hawkins fractures, 11 type II, and 4 type III and 1 type IV.
-    Four cases developed avascular necrosis (2 Hawkins type II and 2 type III). Hawkins
-    sign was observed in 12 cases, of which none developed necrosis. Four cases with
-    negative Hawkins sign developed necrosis. No statistically significant differences
-    were found when comparing the development of avascular necrosis with the displacement
-    of the fracture, soft tissue injury, or delay in treatment. Differences were found
-    when comparing the development of avascular necrosis with the Hawkins sign (P=.03).
-  - The success rate was 92.7% at the time of ureteroscopy and 96.7% at 3 months.
-    The failures were secondary to retropulsion of the stones (3.3%). There were no
-    perforations and one stricture. Stenting was done in 90% of patients.
-- source_sentence: Does intra-abdominal desmoid disease affect patients with an ileal
-    pouch differently than those with an ileorectal anastomosis?
+  - 3D ultrasound validation of the postfiring needle position is an efficient adjunct
+    to ultrasound-guided LCNB. The advantages of 3D ultrasound validation are likely
+    to include a reduction in the number of core samples needed to achieve a reliable
+    histological diagnosis (and a possible reduction in the risk of tumor cell displacement),
+    reduced procedure time and lower costs.
+  - We identified 102 consecutive infants with surgically confirmed IHPS and determined
+    the thickness of the pyloric mucosa compared with the thickness of the surrounding
+    hypertrophied muscle. Fifty-one infants who did not have pyloric stenosis served
+    as controls.
+  - Broad-based electronic health information exchange (HIE), in which patients' clinical
+    data follow them between care delivery settings, is expected to produce large
+    quality gains and cost savings. Although these benefits are assumed to result
+    from reducing redundant care, there is limited supporting empirical evidence.
+- source_sentence: Does pretreatment with statins improve clinical outcome after stroke?
   sentences:
-  - This study aims to determine whether the clinical effects of abdominal desmoids
-    would be worse in patients with restorative proctocolectomy than in patients with
-    ileorectal anastomosis.
-  - Pretreatment with ibuprofen before elective total hip surgery increases the perioperative
-    blood loss significantly. Early discontinuation of non-selective non-steroidal
-    anti-inflammatory drugs is advised.
-  - Orthostatic myoclonus is often underdiagnosed and can be considered a possible
-    cause of unsteadiness in subjects with neurodegenerative diseases. Electromyography
-    surface recording is thereby an aid for investigating unsteadiness of unknown
-    origin.
-- source_sentence: A prospective cohort study was conducted across a tertiary care
-    and private community hospital. Ninety-four patients underwent colonoscopy and
-    polypectomy of diminutive (≤5 mm) polyps from October 2012 to July 2013, yielding
-    a total of 159 polyps. Polyps were examined and classified according to the Sano-Emura
-    classification system. The endoscopic assessment (optical diagnosis) of polyp
-    histology was used to predict appropriate colonoscopy surveillance intervals.
-    The main outcome measure was the accuracy of optical diagnosis of diminutive colonic
-    polyps against the gold standard of histological assessment.
+  - There is no standard protocol for the evaluation of antiseptics used for skin
+    and mucous membranes in the presence of interfering substances. Our objective
+    was to suggest trial conditions adapted from the NF EN 13727 standard, for the
+    evaluation of antiseptics used in gynecology and dermatology.
+  - Post-operative version or percentage of DFV>15° did not significantly differ following
+    IMN of diaphyseal femur fractures between surgeons with and without trauma fellowship
+    training. However, prospective data that removes the inherent bias that the more
+    complex cases are left for the traumatologists are required before a definitive
+    comparison is made.
+  - The statistical power of this case-referent study was such that only large beneficial
+    effects of statins in acute stroke could be confirmed. However, the observed trend,
+    together with experimental observations, is interesting enough to warrant a more
+    detailed analysis of the relationship between statins and stroke outcome.
+- source_sentence: The aim of this study was to describe the evolution and epidemiologic
+    characteristics of shigellosis patients over a 25 year period in a large city.
   sentences:
-  - Endoscopists within a tertiary care setting can accurately predict diminutive
-    polyp histology and confer an appropriate surveillance interval with an associated
-    financial benefit to the healthcare system. However, limitations to its application
-    in the community setting exist, which may improve with further training and high-definition
-    colonoscopes.
-  - The length of stay decreased significantly over the 4 years for all of the four
-    categories, the smallest change being observed for patients with AMI (11.1%) and
-    the largest for those with bronchitis or asthma (22.0%). The readmission rates
-    for AMI, bronchitis or asthma, and TURP showed no consistent change over the 4
-    years. The readmission rate for uterine or adnexal procedures increased significantly
-    between the first and second year (chi 2 = 4.28, p = 0.04) but then remained constant
-    over the next 3 years. The mean number of physician visits increased slightly
-    for AMI in the first year (1.92 to 2.01) and then remained virtually the same.
-    It decreased slightly for bronchitis or asthma over the 4 years. There was no
-    significant correlation between length of stay and readmission rates for individual
-    hospitals in 1992-93 in any of the four categories. Also, no correlation was observed
-    between length of stay and mean number of physician visits for individual hospitals
-    in 1992-93 in the categories AMI and bronchitis or asthma.
-  - Diagnosis of PAD was made in 122 subjects (29.2%) with AAI<0.90. After a 3 year
-    follow-up 203 patients (48.6%) died. The presence of PAD was not related to total
-    mortality or to mortality for ischemic heart disease (IHD), cerebrovascular disease
-    or other causes. IHD mortality was significantly and independently related to
-    low haemoglobin values, previous cerebrovascular disease, polypharmacy and poor
-    mobility conditions.
+  - There was no difference between the two groups in the number of emboli detected
+    (p=0.49) and no significant correlation between number of emboli and dissection
+    time (r=0.0008). However, there was a significantly higher number of emboli in
+    the patient sub-group that were current smokers (p=0.034).
+  - An increased trend was detected in men who had no history of food poisoning or
+    travel to endemic areas. This increase points to a change in the pattern of shigellosis,
+    becoming predominantly male and its main mechanism probably by sexual transmission.
+  - There is a trend for progressively increasing mean intra-osseous length associated
+    with increased flexion of the knee. The mean intra-osseous length for 70° flexion
+    was 25.2 mm (20 mm to 32 mm), which was statistically significant when compared
+    to mean intra-osseous lengths of 32.1 mm (22 mm to 45 mm) and 38.0 mm (34 mm to
+    45 mm) in the 90° and 120° flexion groups, respectively (p<0.05). There were no
+    significant differences among the groups with respect to distance to the LCL.
+    There is a trend toward longer distances to the common peroneal nerve with increased
+    flexion. There was a statistically significant dif - ference when comparing 120°
+    versus 70° (p<0.05).
 pipeline_tag: sentence-similarity
 library_name: sentence-transformers
 metrics:
@@ -143,28 +112,28 @@ model-index:
       type: validation
     metrics:
     - type: cosine_accuracy
-      value: 0.9484662576687116
+      value: 0.9347826086956522
       name: Cosine Accuracy
     - type: cosine_accuracy_threshold
-      value: 0.32253754138946533
+      value: 0.7773971557617188
       name: Cosine Accuracy Threshold
     - type: cosine_f1
-      value: 0.9530201342281879
+      value: 0.9344
       name: Cosine F1
     - type: cosine_f1_threshold
-      value: 0.2860024571418762
+      value: 0.6629912257194519
       name: Cosine F1 Threshold
     - type: cosine_precision
-      value: 0.9301310043668122
+      value: 0.8957055214723927
       name: Cosine Precision
     - type: cosine_recall
-      value: 0.9770642201834863
+      value: 0.9765886287625418
       name: Cosine Recall
     - type: cosine_ap
-      value: 0.966060392741215
+      value: 0.984640914650542
       name: Cosine Ap
     - type: cosine_mcc
-      value: 0.8973631106810793
+      value: 0.8664159803630758
       name: Cosine Mcc
 ---
 
@@ -217,9 +186,9 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("sentence_transformers_model_id")
 # Run inference
 sentences = [
-    'A prospective cohort study was conducted across a tertiary care and private community hospital. Ninety-four patients underwent colonoscopy and polypectomy of diminutive (≤5\u2009mm) polyps from October 2012 to July 2013, yielding a total of 159 polyps. Polyps were examined and classified according to the Sano-Emura classification system. The endoscopic assessment (optical diagnosis) of polyp histology was used to predict appropriate colonoscopy surveillance intervals. The main outcome measure was the accuracy of optical diagnosis of diminutive colonic polyps against the gold standard of histological assessment.',
-    'Endoscopists within a tertiary care setting can accurately predict diminutive polyp histology and confer an appropriate surveillance interval with an associated financial benefit to the healthcare system. However, limitations to its application in the community setting exist, which may improve with further training and high-definition colonoscopes.',
-    'Diagnosis of PAD was made in 122 subjects (29.2%) with AAI<0.90. After a 3 year follow-up 203 patients (48.6%) died. The presence of PAD was not related to total mortality or to mortality for ischemic heart disease (IHD), cerebrovascular disease or other causes. IHD mortality was significantly and independently related to low haemoglobin values, previous cerebrovascular disease, polypharmacy and poor mobility conditions.',
+    'The aim of this study was to describe the evolution and epidemiologic characteristics of shigellosis patients over a 25 year period in a large city.',
+    'An increased trend was detected in men who had no history of food poisoning or travel to endemic areas. This increase points to a change in the pattern of shigellosis, becoming predominantly male and its main mechanism probably by sexual transmission.',
+    'There is a trend for progressively increasing mean intra-osseous length associated with increased flexion of the knee. The mean intra-osseous length for 70° flexion was 25.2 mm (20 mm to 32 mm), which was statistically significant when compared to mean intra-osseous lengths of 32.1 mm (22 mm to 45 mm) and 38.0 mm (34 mm to 45 mm) in the 90° and 120° flexion groups, respectively (p<0.05). There were no significant differences among the groups with respect to distance to the LCL. There is a trend toward longer distances to the common peroneal nerve with increased flexion. There was a statistically significant dif - ference when comparing 120° versus 70° (p<0.05).',
 ]
 embeddings = model.encode(sentences)
 print(embeddings.shape)
@@ -266,14 +235,14 @@ You can finetune this model on your own dataset.
 
 | Metric                    | Value      |
 |:--------------------------|:-----------|
-| cosine_accuracy           | 0.9485     |
-| cosine_accuracy_threshold | 0.3225     |
-| cosine_f1                 | 0.953      |
-| cosine_f1_threshold       | 0.286      |
-| cosine_precision          | 0.9301     |
-| cosine_recall             | 0.9771     |
-| **cosine_ap**             | **0.9661** |
-| cosine_mcc                | 0.8974     |
+| cosine_accuracy           | 0.9348     |
+| cosine_accuracy_threshold | 0.7774     |
+| cosine_f1                 | 0.9344     |
+| cosine_f1_threshold       | 0.663      |
+| cosine_precision          | 0.8957     |
+| cosine_recall             | 0.9766     |
+| **cosine_ap**             | **0.9846** |
+| cosine_mcc                | 0.8664     |
 
 <!--
 ## Bias, Risks and Limitations
@@ -293,24 +262,25 @@ You can finetune this model on your own dataset.
 
 #### Unnamed Dataset
 
-* Size: 3,916 training samples
-* Columns: <code>sentence_0</code> and <code>sentence_1</code>
+* Size: 8,144 training samples
+* Columns: <code>sentence_0</code>, <code>sentence_1</code>, and <code>label</code>
 * Approximate statistics based on the first 1000 samples:
-  |         | sentence_0                                                                         | sentence_1                                                                          |
-  |:--------|:-----------------------------------------------------------------------------------|:------------------------------------------------------------------------------------|
-  | type    | string                                                                             | string                                                                              |
-  | details | <ul><li>min: 8 tokens</li><li>mean: 39.01 tokens</li><li>max: 256 tokens</li></ul> | <ul><li>min: 12 tokens</li><li>mean: 76.96 tokens</li><li>max: 256 tokens</li></ul> |
+  |         | sentence_0                                                                         | sentence_1                                                                          | label                                                          |
+  |:--------|:-----------------------------------------------------------------------------------|:------------------------------------------------------------------------------------|:---------------------------------------------------------------|
+  | type    | string                                                                             | string                                                                              | float                                                          |
+  | details | <ul><li>min: 8 tokens</li><li>mean: 31.29 tokens</li><li>max: 229 tokens</li></ul> | <ul><li>min: 11 tokens</li><li>mean: 75.66 tokens</li><li>max: 256 tokens</li></ul> | <ul><li>min: 0.0</li><li>mean: 0.54</li><li>max: 1.0</li></ul> |
 * Samples:
-  | sentence_0                                                                                                                                   | sentence_1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-  |:---------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-  | <code>Is vitamin D insufficiency or deficiency related to the development of osteochondritis dissecans?</code>                               | <code>The serum level of vitamin D3 in 23 consecutive patients (12 male and 11 female) suffering from a stage III, or stages III and IV, OCD lesion (mostly stage III) admitted for surgery was measured.</code>                                                                                                                                                                                                                                                                                                                                                                        |
-  | <code>Does intra-abdominal desmoid disease affect patients with an ileal pouch differently than those with an ileorectal anastomosis?</code> | <code>This study aims to determine whether the clinical effects of abdominal desmoids would be worse in patients with restorative proctocolectomy than in patients with ileorectal anastomosis.</code>                                                                                                                                                                                                                                                                                                                                                                                  |
-  | <code>Do emergency ultrasound fellowship programs impact emergency medicine residents' ultrasound education?</code>                          | <code>A total of 244 EM residents participated in this study. Thirty percent (95% confidence interval, 24%-35%) reported they had performed more than 150 scans. Residents in programs with EUS fellowships reported performing more scans than those in programs without fellowships (P = .04). Significant differences were noted in most applications of bedside US between residency programs with and without fellowships (P<.05). There were also significant differences in the barriers to US education between residency programs with and without fellowships (P<.05).</code> |
-* Loss: [<code>MultipleNegativesRankingLoss</code>](https://sbert.net/docs/package_reference/sentence_transformer/losses.html#multiplenegativesrankingloss) with these parameters:
+  | sentence_0                                                                                                                                                                                                                                                                                                                                                                                                | sentence_1                                                                                                                                                                                                                                                                                                                                                                                                                                                           | label            |
+  |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------|
+  | <code>Hepatorenal syndrome (HRS) is the functional renal failure associated with advanced cirrhosis and has also been described in fulminant hepatic failure. Without liver transplantation its prognosis is dismal. Our study included patients with type 1 HRS associated with cirrhosis, who were not liver transplant candidates.AIM: To identify variables associated with improved survival.</code> | <code>We report for the first time ESLD etiology as a prognostic factor for survival. The renal function (expressed as serum creatinine) and urinary Na (<5 mEq/l) at the time of diagnosis were found to be associated with survival, suggesting that early treatment might increase survival.</code>                                                                                                                                                               | <code>1.0</code> |
+  | <code>Do patients with localized prostate cancer treatment really want more aggressive treatment?</code>                                                                                                                                                                                                                                                                                                  | <code>Examine whether patients with prostate cancer choose the more aggressive of two radiotherapeutic options, whether this choice is reasoned, and what the determinants of the choice are.</code>                                                                                                                                                                                                                                                                 | <code>0.0</code> |
+  | <code>Is grandmultiparity an independent risk factor for adverse perinatal outcomes?</code>                                                                                                                                                                                                                                                                                                               | <code>A database of the vast majority of maternal and newborn hospital discharge records linked to birth/death certificates was queried to obtain information on all multiparous women with a singleton delivery in the state of California from January 1, 1997 through December 31, 1998. Maternal and neonatal pregnancy outcomes of grandmultiparous women were compared to multiparous women who were 30 years or older at the time of their last birth.</code> | <code>1.0</code> |
+* Loss: [<code>ContrastiveLoss</code>](https://sbert.net/docs/package_reference/sentence_transformer/losses.html#contrastiveloss) with these parameters:
   ```json
   {
-      "scale": 20.0,
-      "similarity_fct": "cos_sim"
+      "distance_metric": "SiameseDistanceMetric.COSINE_DISTANCE",
+      "margin": 0.5,
+      "size_average": true
   }
   ```
 
@@ -447,9 +417,12 @@ You can finetune this model on your own dataset.
 ### Training Logs
 | Epoch  | Step | Training Loss | validation_cosine_ap |
 |:------:|:----:|:-------------:|:--------------------:|
-| 1.0    | 245  | -             | 0.9623               |
-| 2.0    | 490  | -             | 0.9653               |
-| 2.0408 | 500  | 0.3315        | 0.9661               |
+| 0.9823 | 500  | 0.0137        | 0.9816               |
+| 1.0    | 509  | -             | 0.9816               |
+| 1.9646 | 1000 | 0.0074        | 0.9844               |
+| 2.0    | 1018 | -             | 0.9789               |
+| 2.9470 | 1500 | 0.005         | 0.9827               |
+| 3.0    | 1527 | -             | 0.9846               |
 
 
 ### Framework Versions
@@ -478,15 +451,17 @@ You can finetune this model on your own dataset.
 }
 ```
 
-#### MultipleNegativesRankingLoss
+#### ContrastiveLoss
 ```bibtex
-@misc{henderson2017efficient,
-    title={Efficient Natural Language Response Suggestion for Smart Reply},
-    author={Matthew Henderson and Rami Al-Rfou and Brian Strope and Yun-hsuan Sung and Laszlo Lukacs and Ruiqi Guo and Sanjiv Kumar and Balint Miklos and Ray Kurzweil},
-    year={2017},
-    eprint={1705.00652},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL}
+@inproceedings{hadsell2006dimensionality,
+    author={Hadsell, R. and Chopra, S. and LeCun, Y.},
+    booktitle={2006 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR'06)},
+    title={Dimensionality Reduction by Learning an Invariant Mapping},
+    year={2006},
+    volume={2},
+    number={},
+    pages={1735-1742},
+    doi={10.1109/CVPR.2006.100}
 }
 ```
 
