@@ -12,7 +12,7 @@ Large Language Models struggle with biomedical Q&A due to hallucinations and out
 
 ```bash
 git clone https://github.com/HamsiniGupta/PubMedRAG
-cd PubMedRAG/sentence_transformers
+cd PubMedRAG/PubMedRAG_Files
 pip install -r requirements.txt
 ```
 
@@ -34,9 +34,14 @@ python train.py --train_file data/pubmedqa_train_supervised.csv --epochs 5
 ```
 ## Evaluation
 ```bash
+#Get results for PubMedRAG
+python testPubMedRAG.py
 # Compare PubMedRAG and BERT and evaluate results
 python compareAllEmbeddings.py
 ```
+The following table shows the results for different retrievers in the RAG pipeline evaluated on both LLMs.
+<img width="792" height="397" alt="image" src="https://github.com/user-attachments/assets/9c7a05cd-4c15-4136-a39a-6d7a07ae4b38" />
+
 
 ## Acknowledgements
 This work was supported by the NSF grants #CNS-2349663 and #OAC-2528533. This work used Indiana JetStream2 GPU at Indiana University through allocation NAIRR250048 from the Advanced Cyberinfrastructure Coordination Ecosystem: Services & Support (ACCESS) program, which is supported by the NSF grants #2138259, #2138286, #2138307, #2137603, and #2138296. Any opinions, findings, and conclusions or recommendations expressed in this work are those of the author(s) and do not necessarily reflect the views of the NSF.
