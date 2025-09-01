@@ -147,10 +147,7 @@ class ValidationLossTracker:
             self.best_epoch = epoch
             logging.info(f"New best validation score: {score:.4f} at epoch {epoch}")
         
-        # Save validation history
-        val_df = pd.DataFrame(self.validation_scores)
-        val_df.to_csv(os.path.join(self.output_dir, 'validation_history.csv'), index=False)
-        
+    
         # Don't return anything - this fixes the callback issue
 
 def train_model(model, train_samples, val_samples, val_labels, args):
@@ -320,7 +317,6 @@ def main():
     
     logging.info("\nTraining completed successfully!")
     logging.info(f"Best validation score: {loss_tracker.best_score:.4f}")
-    logging.info(f"Validation history saved to: {args.output_dir}/validation_history.csv")
 
 if __name__ == "__main__":
     main()
